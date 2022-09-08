@@ -1,7 +1,10 @@
 """ Se genereaza Diagrama Voronoi pentru un sistem de n puncte din plan cu modulul graphics.py """
 
+import threading
 from numpy import zeros, absolute
 from graphics import *
+import threading
+
 WIDTH = int(input("Width = "))
 HEIGHT = int(input("Height = "))
 nrpuncte = int(input("Numar de puncte = "))
@@ -51,5 +54,12 @@ if __name__ == '__main__':
         print("Y[", i, "]=")
         Y[i] = int(input())
 
-    draw(euclidian_distance)
-    draw(manhattan_distance)
+    threads = []
+    threads.append(threading.Thread(target=draw, args=(euclidian_distance,)))
+    # threads.append(threading.Thread(target=draw, args=(manhattan_distance,)))
+
+    for t in threads:
+        t.start()
+
+    for t in threads:
+        t.join()
